@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../../../../../app/AppKernel.php';
+require_once __DIR__.'/../../../../../../app/AppKernel.php';
 
 use Theodo\RogerCmsBundle\Entity\Page;
 use Theodo\RogerCmsBundle\Tests\Unit;
@@ -26,7 +26,7 @@ class PageTest extends \PHPUnit_Framework_TestCase
 
         // Load "test" entity manager
         $this->em = $kernel->getContainer()->get('doctrine')->getEntityManager('test');
-        
+
     }
 
     /**
@@ -58,7 +58,7 @@ class PageTest extends \PHPUnit_Framework_TestCase
         // Test aboutPage
         $this->assertInstanceOf('Theodo\RogerCmsBundle\Entity\Page', $aboutPage);
         $this->assertEquals('About', $aboutPage->getName());
-        
+
         // Retrieve parent page
         $parentPage = $aboutPage->getParent();
         $this->assertInstanceOf('Theodo\RogerCmsBundle\Entity\Page', $parentPage);
@@ -115,4 +115,30 @@ class PageTest extends \PHPUnit_Framework_TestCase
         // Test full slug
         $this->assertEquals($page->getFullSlug(), 'homepage/theodo/theodo-team');
     }
+
+    /**
+     * Test getFullSlug function
+     *
+     * @author Pierre-Henri Cumenge <pierrehenric@theodo.fr>
+     * @since 2011-11-25
+     */
+    public function testI18NPageEdit()
+    {
+        print_r("\n> Test \"I8N Page\"");
+
+        // Retrieve entity manager
+        $em = $this->getEntityManager();
+
+        // Retrieve "home" page
+        $page = $em->getRepository('TheodoRogerCmsBundle:Page')->findOneBy(array('slug' => 'homepage'));
+
+        $page->setTitle('translated');
+
+        // Retrieve "home" page
+        $page = $em->getRepository('TheodoRogerCmsBundle:Page')->findOneBy(array('slug' => 'homepage'));
+
+        var_dump($page->getTitle());
+    }
+
+
 }

@@ -29,7 +29,10 @@ class MediaController extends Controller
         $medias = $this->get('roger.content_repository')->findAll('media');
 
         return $this->render('TheodoRogerCmsBundle:Media:index.html.twig',
-                array('medias' => $medias)
+                array('medias' => $medias,
+                      'roger_admin_layout' => $this->container->getParameter('roger.admin.layout'),
+                      'roger_admin_media_index' => $this->container->getParameter('roger.admin.media.index'),
+                    )
                 );
     }
 
@@ -81,7 +84,9 @@ class MediaController extends Controller
                 array(
                     'media' => $media,
                     'form' => $form->createView(),
-                  )
+                    'roger_admin_layout' => $this->container->getParameter('roger.admin.layout'),
+                    'roger_admin_media_edit' => $this->container->getParameter('roger.admin.media.edit'),
+                     )
                 );
     }
 
@@ -107,7 +112,9 @@ class MediaController extends Controller
 
         return $this->render('TheodoRogerCmsBundle:Media:remove.html.twig',
                 array(
-                  'media' => $media
+                  'media' => $media,
+                  'roger_admin_layout' => $this->container->getParameter('roger.admin.layout'),
+                  'roger_admin_media_remove' => $this->container->getParameter('roger.admin.media.remove'),
                 ));
     }
 }

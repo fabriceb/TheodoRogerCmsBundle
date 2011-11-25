@@ -19,3 +19,4 @@ web/bundles/*
 deps.lock
 web/uploads/*
 .DS_Store
+*~

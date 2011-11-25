@@ -12,6 +12,8 @@ use Theodo\RogerCmsBundle\Repository\PageRepository;
 use Theodo\RogerCmsBundle\Validator\Unique;
 use Theodo\RogerCmsBundle\Validator\Exists;
 use Theodo\RogerCmsBundle\Validator\TwigSyntax;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 
 /**
  * Theodo\RogerCmsBundle\Entity\Page
@@ -72,6 +74,18 @@ class Page
      * @var Theodo\RogerCmsBundle\Entity\Page
      */
     private $parent;
+
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
+
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+    }
 
     public function __construct()
     {
@@ -339,8 +353,9 @@ class Page
      */
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        // Name validator: not null
-        $metadata->addPropertyConstraint('name', new NotBlank());
+        // Title validator: not null
+        $metadata->addPropertyConstraint('title', new NotBlank());
+
 
         // Slug validator: not null and unique
         $metadata->addPropertyConstraint('slug', new NotBlank());
@@ -473,7 +488,7 @@ class Page
     /**
      * Get lifetime
      *
-     * @return integer 
+     * @return integer
      */
     public function getLifetime()
     {
@@ -499,7 +514,7 @@ class Page
     /**
      * Get public
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getPublic()
     {
@@ -519,7 +534,7 @@ class Page
 
         return $subtypes[$this->content_type];
     }
-    
+
     /**
      * @author fabriceb
      * @since 2011-08-19
@@ -553,7 +568,7 @@ class Page
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -573,7 +588,7 @@ class Page
     /**
      * Get keywords
      *
-     * @return text 
+     * @return text
      */
     public function getKeywords()
     {

@@ -112,24 +112,6 @@ class UserController extends Controller
     }
 
     /**
-     * User box
-     *
-     * @return Response
-     *
-     * @author Vincent Guillon <vincentg@theodo.fr>
-     * @since date 2011-06-24
-     */
-    public function boxComponentAction()
-    {
-        // Retrieve connected user
-        $user = $this->get('security.context')->getToken()->getUser();
-
-        return $this->render('TheodoRogerCmsBundle:User:box-component.html.twig', array(
-            'user' => $user
-        ));
-    }
-
-    /**
      * List user action
      *
      * @return Response
@@ -139,11 +121,13 @@ class UserController extends Controller
      */
     public function listAction()
     {
-        // Retrieve users
+        // Retrieve usersvar_dump('print');die;
         $users = $this->getUserRepository()->findAll('user');
 
         return $this->render('TheodoRogerCmsBundle:User:list.html.twig', array(
             'users' => $users,
+            'roger_admin_layout' => $this->container->getParameter('roger.admin.layout'),
+            'roger_admin_user_index' => $this->container->getParameter('roger.admin.user.index'),
         ));
     }
 
@@ -184,7 +168,9 @@ class UserController extends Controller
 
         return $this->render('TheodoRogerCmsBundle:User:remove.html.twig', array(
             'user' => $user,
-        ));
+            'roger_admin_layout' => $this->container->getParameter('roger.admin.layout'),
+            'roger_admin_user_remove' => $this->container->getParameter('roger.admin.user.remove'),
+          ));
     }
 
     /**
@@ -360,7 +346,9 @@ class UserController extends Controller
             'TheodoRogerCmsBundle:User:'.$action.'.html.twig',
             array(
                 'form'      => $form->createView(),
-                'user'      => $user
+                'user'      => $user,
+                'roger_admin_layout' => $this->container->getParameter('roger.admin.layout'),
+                'roger_admin_user_edit' => $this->container->getParameter('roger.admin.user.edit'),
             )
         );
     }

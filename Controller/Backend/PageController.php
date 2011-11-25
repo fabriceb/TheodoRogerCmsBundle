@@ -32,7 +32,14 @@ class PageController extends Controller
         // Retrieve pages
         $pages = $this->get('roger.content_repository')->getFirstTwoLevelPages();
 
-        return $this->render('TheodoRogerCmsBundle:Page:index.html.twig', array('pages' => $pages));
+        return $this->render(
+                 'TheodoRogerCmsBundle:Page:index.html.twig',
+                 array(
+                    'pages' => $pages,
+                    'roger_admin_layout' => $this->container->getParameter('roger.admin.layout'),
+                    'roger_admin_page_index' => $this->container->getParameter('roger.admin.page.index')
+                 )
+               );
     }
 
 
@@ -98,22 +105,25 @@ class PageController extends Controller
         // Retrieve request
         $request = $this->getRequest();
 
-        // Initialize form hasErros
+        // Initialize form hasErrors
         $hasErrors = false;
 
         // Request is post
         if ($request->getMethod() == 'POST') {
-
+            //$this->get('roger.content_repository')->getEntityManager()->clear();
+            //var_dump($form->getData()->getTitle());die;
             $this->bindEditForm($form, $request);
 
             // Check form and save object
             if ($form->isValid())
             {
-                // remove twig cached file
+                                // remove twig cached file
                 $this->get('roger.caching')->invalidate('page:'.$page->getName());
 
                 $page = $form->getData();
+
                 $this->get('roger.content_repository')->save($page);
+
 
                 $this->get('roger.caching')->warmup('page:'.$page->getName());
 
@@ -132,6 +142,7 @@ class PageController extends Controller
             }
         }
 
+        //var_dump($request->attributes->all());die;
         return $this->render(
             'TheodoRogerCmsBundle:Page:edit.html.twig',
             array(
@@ -141,7 +152,9 @@ class PageController extends Controller
                 'parent_page' => $parent_page,
                 'layouts'     => $layouts,
                 'layout_name' => $layout_name,
-                'tabs'        => $tabs
+                'tabs'        => $tabs,
+                'roger_admin_layout' => $this->container->getParameter('roger.admin.layout'),
+                'roger_admin_page_edit' => $this->container->getParameter('roger.admin.page.edit'),
             )
         );
     }
@@ -174,7 +187,9 @@ class PageController extends Controller
         return $this->render(
             'TheodoRogerCmsBundle:Page:remove.html.twig',
             array(
-                'page' => $page
+                'page' => $page,
+                'roger_admin_layout' => $this->container->getParameter('roger.admin.layout'),
+                'roger_admin_remove_page' => $this->container->getParameter('roger.admin.remove_page'),
             )
         );
     }
@@ -200,7 +215,9 @@ class PageController extends Controller
             'TheodoRogerCmsBundle:Page:page-list.html.twig',
             array(
                 'pages' => $pages,
-                'level' => $request->get('level')
+                'level' => $request->get('level'),
+                'roger_admin_layout' => $this->container->getParameter('roger.admin.layout'),
+                'roger_admin_expand_page' => $this->container->getParameter('roger.admin.expand_page'),
             )
         );
     }
@@ -226,7 +243,9 @@ class PageController extends Controller
             'TheodoRogerCmsBundle:Page:site-map-component.html.twig',
             array(
                 'page'  => $page,
-                'level' => 0
+                'level' => 0,
+                'roger_admin_layout' => $this->container->getParameter('roger.admin.layout'),
+                'roger_admin_site_map' => $this->container->getParameter('roger.admin.site_map'),
             )
         );
     }

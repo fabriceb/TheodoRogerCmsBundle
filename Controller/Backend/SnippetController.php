@@ -30,7 +30,10 @@ class SnippetController extends Controller
         $snippets = $this->get('roger.content_repository')->findAll('snippet');
 
         return $this->render('TheodoRogerCmsBundle:Snippet:index.html.twig',
-                array('snippets' => $snippets)
+                array('snippets' => $snippets,
+                      'roger_admin_layout' => $this->container->getParameter('roger.admin.layout'),
+                      'roger_admin_snippet_index' => $this->container->getParameter('roger.admin.snippet.index'),
+                     )
                 );
     }
 
@@ -91,6 +94,8 @@ class SnippetController extends Controller
                     'snippet' => $snippet,
                     'form' => $form->createView(),
                     'hasErrors'   => $hasErrors,
+                    'roger_admin_layout' => $this->container->getParameter('roger.admin.layout'),
+                    'roger_admin_snippet_edit' => $this->container->getParameter('roger.admin.snippet.edit'),
                   )
                 );
     }
@@ -117,7 +122,9 @@ class SnippetController extends Controller
 
         return $this->render('TheodoRogerCmsBundle:Snippet:remove.html.twig',
                 array(
-                  'snippet' => $snippet
+                  'snippet' => $snippet,
+                  'roger_admin_layout' => $this->container->getParameter('roger.admin.layout'),
+                  'roger_admin_snippet_remove' => $this->container->getParameter('roger.admin.snippet.remove'),
                 ));
     }
 }

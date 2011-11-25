@@ -214,4 +214,9 @@ class ContentEntityRepository implements ContentRepositoryInterface
         return $this->getEntityManager()
                 ->getRepository('TheodoRogerCmsBundle:' . ucfirst($type));
     }
+
+    public function clear()
+    {
+        $this->getEntityManager()->clear();
+    }
 }
